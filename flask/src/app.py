@@ -1,10 +1,9 @@
-From flask import Flask
-app = Flask(__name__)
+import flask
+app = flask.Flask(__name__)
 
 @app.route('/')
-def hello_world:
-    return 'Hey, we have Flask in a Docker container!'
+def hello_world():
+    return 'Flask Dockerized'
 
-
-if __name == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
