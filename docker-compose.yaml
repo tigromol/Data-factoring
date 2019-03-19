@@ -8,17 +8,29 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
       MONGO_INITDB_DATABASE: celery
     ports:
+      - "27017:27017"
+    expose:
       - "27017"
   flask:
     build:
       context: ./flask
     environment:
       FLASK_APP: app.py
-      FLASK_DEBUG: 1
+      FLASK_ENV: development
     volumes:
       - ./flask/src:/app/src
     ports:
       - "5000:5000"
+    expose:
+      - "5000"
     depends_on:
       - mongo
+      - redis
+  redis:
+    build:
+      context: ./redis
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
     
