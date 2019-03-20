@@ -1,0 +1,92 @@
+Models: {
+    Function: {
+        id: int,
+        name: string,
+        display: string,
+        args: [
+            "first",
+            "second"
+        ]
+    }
+}
+
+1: GET api/data
+    Req body: *file*
+    Res body: { 
+        id: 1,
+        data: [
+            {
+                name: "name1",
+                array: [1, 2, 3]
+            },
+            {
+                name: "name2",
+                array: [1, 2, 3]
+            },
+            {
+                name: "name3",
+                array: { 1: 2, 2: 3, 3: 4}
+            }
+        ]
+    }
+2: GET api/functions
+    Req body: { }
+    Res body: {
+        [
+            model.Function,
+            model.Function
+        ]
+        
+    }
+3: POST api/functions/<id>
+    Req body: {
+        functions: [
+            {
+                function: model.Function,
+                args: [1, 2, 3]
+            },
+            {
+                function: model.Function,
+                args: [1, 2, 3, 4]
+            }
+        ]
+    }
+    Req body: {
+        [
+            {
+                name: "first",
+                array: [1, 2, 3]
+            },
+            {
+                name: "second",
+                array: {1:2, 2:3, 3:4}
+            }
+        ]
+    }
+3.1: GET api/functions/<name>
+    Req body: { }
+    Res body: {
+        name: "function2",
+        display: "Мат ожидание",
+        description: "Эта функция считает мат ожидание",
+        args: [
+            "first arg",
+            "second arg"
+        ]
+    }
+4: Finish
+    Req body: {
+        id: 1,
+        email: "ex@ex.com",
+        functions: [
+            {
+                name: "function1",
+                args: [1, 2, 3]
+            },
+            {
+                name: "function2",
+                args: [1, 2, 3, 4]
+            }
+        ]
+    }
+    Res body: { }
