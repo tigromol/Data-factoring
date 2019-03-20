@@ -34,6 +34,7 @@ Models: {
                 function: model.Function,
                 args: [1, 2, 3]
             },
+            ...,
             {
                 function: model.Function,
                 args: [1, 2, 3, 4]
@@ -44,11 +45,11 @@ Models: {
         [
             {
                 function: model.Function,
-                data: [1, 2, 3]
+                data: [1, ..., 2, 3]
             },
             {
                 function: model.Function,
-                data: {1:2, 2:3, 3:4}
+                data: {1:2, ..., 2:3, 3:4}
             }
         ]
     }
