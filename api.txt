@@ -1,24 +1,28 @@
+############# MODELS ###############
+
 Models: {
     Function: {
         id: int,
         name: string,
         display: string,
-        args: string[]
+        args: string[],
     },
 
     Data: {
         id: int,
-        file: file,
         email?: string,
-        data: [
-            {
-                name: string,
-                data: int[]
-            }
-        ],
-        createdAt: date
-    }
+        data: Column[],
+        createdAt: date,
+    },
+
+    Column: {
+        name: string,
+        data: int[],
+    },
 }
+
+############# API ###############
+
 1: POST api/data
     Req: file
     Req body: {
@@ -27,8 +31,13 @@ Models: {
     Res body: { 
         model.Data
     }
+
 3: GET api/data/<dataId>
     Req body: {
+        columns: [
+            "column1",
+            "column2",
+        ],
         functions: [
             {
                 function: model.Function,
@@ -45,17 +54,22 @@ Models: {
         [
             {
                 function: model.Function,
-                data: [1, ..., 2, 3]
+                data: model.Column
             },
             {
                 function: model.Function,
-                data: {1:2, ..., 2:3, 3:4}
+                data: model.Column
             }
         ]
     }
+
 4: PUT api/data/<dataId>
     Req body: {
         email: "ex@ex.com",
+        columns: [
+            "column1",
+            "column2",
+        ],
         functions: [
             {
                 function: model.Function,
@@ -79,6 +93,7 @@ Models: {
         ]
     }
     Res body: { }
+
 6: DELETE api/data/<dataId>
     Req body: { }
     Res body: { }
@@ -93,6 +108,7 @@ Models: {
         ]
         
     }
+
 5: GET api/functions/<functionId>
     Req body: { }
     Res body: {
