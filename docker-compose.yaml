@@ -1,12 +1,18 @@
-version: '3'
+version: '3.4'
+
+x-celery_config: &celery_config
+  BROKER_URL: redis://redis:6379/0
+  RESULT_BACKEND: redis://redis:6379/0
 
 services:
   mongo:
-    image: mongo
+    build:
+      context: ./mongo
     environment:
+      <<: *celery_config
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_DATABASE: celery
+      MONGO_INITDB_DATABASE: datafactoring
     ports:
       - "27017:27017"
     expose:
@@ -25,6 +31,13 @@ services:
       - "5000"
     depends_on:
       - mongo
+      - celery
+  celery:
+    build:
+      context: ./celery
+    environment:
+      *celery_config
+    depends_on:
       - redis
   redis:
     build:

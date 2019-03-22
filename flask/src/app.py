@@ -1,40 +1,26 @@
-from flask import Flask,request,flash,redirect
 import os
-import pymongo
-from pymongo import MongoClient as mc
-import parse as p
+from flask import Flask
 
+# Configure database
+from mongoengine import connect
+connect('datafactoring', host='mongo', port=27017, username='admin', password='admin')
+
+# Configure main application
 app = Flask(__name__)
+app.config.from_object('config')
 app.secret_key = os.urandom(24)
-client = mc('mongo',27017,username='admin',password='admin') #ip and host here
-db = client.celery
 
-## We insert one file in dict formation (parsed via pandas parse module)
-@app.route('/api/data/',methods=['POST','GET'])
-def upload():
-    if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-    file = request.files['file']
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
-    else:
-        posts = db.posts
-        print('wtf is this')
-        posts.insert_one(p.parse(file))
-        return 'success'
-
-## Test route db.posts.find() returns cursor object from bd
-## indexes of cursor is apparantly posts from db
-@app.route('/test',methods=['POST','GET'])
-def test():
-    show = db.posts.find()
-    return str(show[1])
+# Register routes
+from routes.data import data
+from routes.functions import functions
+from routes.tests import tests
+app.register_blueprint(data, url_prefix='/data/')
+app.register_blueprint(functions, url_prefix='/functions/')
+app.register_blueprint(tests, url_prefix='/tests/')
 
 def proc(arr,args):
     for i in args:
         arr = i(arr)
+
 if __name__ == '__main__':
-    app.debug = True
     app.run()

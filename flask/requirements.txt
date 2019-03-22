@@ -1,3 +1,6 @@
 Flask
-pymongo
+mongoengine
 pandas
+celery
+redis
+amqp
