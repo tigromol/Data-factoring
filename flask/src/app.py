@@ -1,8 +1,9 @@
 import os
-from flask import Flask
 
+from flask import Flask
 # Configure database
 from mongoengine import connect
+
 connect('datafactoring', host='mongo', port=27017, username='admin', password='admin')
 
 # Configure main application
@@ -14,6 +15,7 @@ app.secret_key = os.urandom(24)
 from routes.data import data
 from routes.functions import functions
 from routes.tests import tests
+
 app.register_blueprint(data, url_prefix='/data/')
 app.register_blueprint(functions, url_prefix='/functions/')
 app.register_blueprint(tests, url_prefix='/tests/')

@@ -94,10 +94,6 @@ Models: {
     }
     Res body: { }
 
-6: DELETE api/data/<dataId>
-    Req body: { }
-    Res body: { }
-
 2: GET api/functions
     Req body: { }
     Res body: {
@@ -107,11 +103,5 @@ Models: {
             model.Function
         ]
         
-    }
-
-5: GET api/functions/<functionId>
-    Req body: { }
-    Res body: {
-        model.Function
     }
     
