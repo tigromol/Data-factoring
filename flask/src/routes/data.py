@@ -27,13 +27,22 @@ def upload():
         for k, v in parsed_file.items():
             cols.append(Column(name = k, data = v))
 
-        data = Data(
+        new_data = Data(
             created = datetime.datetime.now(),
             columns = cols
         )
-        data.file.put(req_file)
-        data.save()
-        return data.json(), 200
+        new_data.file.put(req_file)
+        new_data.save()
+
+        result = lists_to_csv(new_data.columns)
+        return jsonify(result), 200
+
+def lists_to_csv(columns):
+    result = []
+    max_length = max(*[len(column.data) for column in columns])
+    result.append(["X", *[column.name for column in columns]])
+    result.extend(list(zip(list(range(max_length)), *[column.data for column in columns])))
+    return result
 
 @data.route('/<id>', methods=['GET'])
 def preprocess(id):
@@ -41,7 +50,6 @@ def preprocess(id):
     req_body = request.get_json()
     columns = req_body['columns']
     functions = req_body['functions']
-    print(Data.objects.get(id=id).columns)
     data = Data.objects.get(id=id).columns
     data = [column for column in data if column.name in columns]
     for column in data:
