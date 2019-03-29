@@ -2,7 +2,6 @@
 
 Models: {
     Function: {
-        id: int,
         name: string,
         display: string,
         args: string[],
@@ -40,25 +39,49 @@ Models: {
         ],
         functions: [
             {
-                function: model.Function,
-                args: [1, 2, 3]
+                name: "function_name1",
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
             },
             ...,
             {
-                function: model.Function,
-                args: [1, 2, 3, 4]
-            }
+                name: "function_name2",
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
+            },
+            [
+                {
+                    name: "function_name3",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
+                },
+                {
+                    name: "function_name4",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
+                }
+            ]
         ]
     }
     Res body: {
         [
             {
-                function: model.Function,
-                data: model.Column
+                name: "function_name1",
+                column: "column1",
+                data: [1, 2, 3]
             },
             {
-                function: model.Function,
-                data: model.Column
+                name: "function_name2",
+                column: "column2",
+                data: [1, 2, 3]
             }
         ]
     }
@@ -72,22 +95,34 @@ Models: {
         ],
         functions: [
             {
-                function: model.Function,
-                args: [1, ..., 2, 3]
-            },
-            {
-                function: model.Function,
-                args: [1, 2, ..., 3, 4]
+                name: "function_name1",
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
             },
             ...,
+            {
+                name: "function_name2",
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
+            },
             [
                 {
-                    function: model.Function,
-                    args: [1, ..., 2, 3]
+                    name: "function_name3",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
                 },
                 {
-                    function: model.Function,
-                    args: [1, 2, ..., 3, 4]
+                    name: "function_name4",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
                 }
             ]
         ]

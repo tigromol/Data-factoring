@@ -11,7 +11,6 @@ class ConvertableDocument(Document):
     meta = {'queryset_class': JsonQuerySet, 'allow_inheritance': True, 'abstract': True,}
 
     def json(self):
-        print(self.dict())
         return jsonify(self.dict())
     
     def dict(self):
@@ -36,3 +35,8 @@ class Data(ConvertableDocument):
     email = EmailField()
     columns = ListField(EmbeddedDocumentField(Column), required=True)
     created = DateTimeField(required=True)
+
+class Function(ConvertableDocument):
+    name = StringField(required=True, unique=True)
+    display_name = StringField(required=True)
+    args = ListField(StringField())
