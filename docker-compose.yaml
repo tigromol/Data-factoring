@@ -1,19 +1,10 @@
-version: '3.4'
+version: "3.4"
 
 x-celery_config: &celery_config
   BROKER_URL: redis://redis:6379/0
   RESULT_BACKEND: redis://redis:6379/0
 
 services:
-  react:
-    build:
-      context: ./react
-    volumes:
-      - ./react/src:/app/src
-      - /app/node_modules
-    ports:
-      - "3000:3000"
-      - "35729:35729"
   mongo:
     build:
       context: ./mongo
@@ -44,8 +35,7 @@ services:
   celery:
     build:
       context: ./celery
-    environment:
-      *celery_config
+    environment: *celery_config
     depends_on:
       - redis
   redis:
@@ -55,4 +45,13 @@ services:
       - "6379:6379"
     expose:
       - "6379"
-    
+  client:
+    build:
+      context: ./react
+    volumes:
+      - "/app/node_modules"
+      - "./react:/app"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - flask

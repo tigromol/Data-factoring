@@ -1,0 +1,1 @@
+export const FETCH_SOME_DATE = "FETCH_SOME_DATE";
