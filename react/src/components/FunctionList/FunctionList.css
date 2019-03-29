@@ -1,0 +1,27 @@
+.function-list {
+  max-width: 20%;
+  max-height: 98vh;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow: scroll;
+  float: right;
+  border: 1px solid #ccc;
+  padding: 0.25rem;
+}
+
+.function-add-btn {
+  width: 25%;
+  background: #4575ce;
+  text-align: center;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin: 1.5rem 0;
+  cursor: pointer;
+  transition: 0.2s background;
+}
+
+.function-add-btn:hover {
+  background: #305cad;
+}
