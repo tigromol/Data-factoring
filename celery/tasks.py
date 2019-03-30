@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import parse
 from functions_base import funcdict
 from mongoengine import connect
+import numpy as np
 from pandas import DataFrame 
 
 from models import Column, Data
