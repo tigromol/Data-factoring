@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import authReducer from "./authReducer";
+import chartReducer from "./chartReducer";
 
 export default combineReducers({
-	auth: authReducer,
+	charts: chartReducer,
 });

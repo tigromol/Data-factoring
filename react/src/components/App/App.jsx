@@ -1,12 +1,21 @@
 import React, { Component } from "react";
-import "./App.scss";
+import "./App.css";
+import { Provider } from "react-redux";
+import store from "../../store";
+import FunctionList from "../FunctionList/FunctionList";
+import ControlledChart from "../ControlledChart";
+import FileUploader from "../FileUploader/index";
 
 class App extends Component {
 	render() {
 		return (
-			<div className="app">
-				<h1>Hi</h1>
-			</div>
+			<Provider store={store}>
+				<main className="main">
+					<FunctionList />
+					{/* <ControlledChart /> */}
+					<FileUploader />
+				</main>
+			</Provider>
 		);
 	}
 }

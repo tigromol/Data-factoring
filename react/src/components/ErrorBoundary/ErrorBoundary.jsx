@@ -1,17 +1,17 @@
 import React, { Component } from "react";
+import "./ErrorBoundary.scss";
 
-export default class ErrorBoundry extends Component {
-	state = {
-		hasError: false,
-	};
+export default class ErrorBoundary extends Component {
+  state = { hasError: false };
 
-	componentDidCatch(err) {
-		console.log(err);
-		this.setState({ hasError: true });
-	}
-	render() {
-		const { hasError } = this.state;
-		if (hasError) return <h1>Something was broken</h1>;
-		return this.props.children;
-	}
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
+
+  render() {
+    const { hasError } = this.state;
+
+    if (hasError) return <div>Error</div>;
+    return this.props.children;
+  }
 }
