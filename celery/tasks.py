@@ -26,8 +26,8 @@ def process(id,email,columns,functions):
     plt.subplots_adjust(wspace=2.2,hspace=2.2)
 
     
-
-    data = parse(Data.file.read(id=id))
+    result = []
+    data = parse.parse(Data.file.read(id=id))
     cols = []
     for k, v in data.items():
         cols.append(Column(name = k, data = v))
