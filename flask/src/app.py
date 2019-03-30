@@ -22,9 +22,6 @@ app.register_blueprint(data, url_prefix='/data/')
 app.register_blueprint(functions, url_prefix='/functions/')
 app.register_blueprint(tests, url_prefix='/tests/')
 
-def proc(arr,args):
-    for i in args:
-        arr = i(arr)
 
 if __name__ == '__main__':
     app.run()
