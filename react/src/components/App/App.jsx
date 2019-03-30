@@ -8,6 +8,8 @@ import FileUploader from "../FileUploader/index";
 
 import { getFunctions } from "../../actions/functions";
 import { connect } from "react-redux";
+import ControlPanel from "../ControlPanel";
+import Dashboard from "../Dashboard";
 
 const App = ({ getFunctions }) => {
 	useEffect(() => {
@@ -17,9 +19,9 @@ const App = ({ getFunctions }) => {
 	return (
 		<Provider store={store}>
 			<main className="main">
+				<ControlPanel />
 				<FunctionList />
-				<ControlledChart />
-				<FileUploader />
+				<Dashboard />
 			</main>
 		</Provider>
 	);

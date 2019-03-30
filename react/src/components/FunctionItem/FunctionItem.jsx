@@ -1,28 +1,7 @@
 import React from "react";
 import "./FunctionItem.scss";
 
-const FunctionItem = props => {
-	const description = props.description || "Function description";
-	const display = props.display || "display";
-	const args = props.args || [
-		{
-			description: "string",
-			display: "string",
-			name: "div",
-		},
-		{
-			description: "string",
-			display: "string",
-			name: "div",
-		},
-		{
-			description: "string",
-			display: "string",
-			name: "div",
-		},
-	];
-	const name = props.name;
-
+const FunctionItem = ({ description, display, args }) => {
 	return (
 		<div className="function-item">
 			<div className="function-desc">
@@ -42,9 +21,7 @@ const ArgumentsItem = ({ display, description, name }) => {
 	return (
 		<div className="function-arg">
 			<div className="arg">{display}</div>
-			<div className="arg-description">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-			</div>
+			<div className="arg-description">{description}</div>
 			<input type="text" placeholder="Arg value" />
 		</div>
 	);
