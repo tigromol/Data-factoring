@@ -1,43 +1,49 @@
 ############# MODELS ###############
 
-Models: {
-    Function: {
-        name: string,
-        display: string,
-        args: string[],
-    },
+=============== FUNCS ==============
+GET "/api/functions":
+    req: -
+    res = [
+        {
+            name: string,
+            display: string,
+            description: string,
+            args: [
+                {
+                    description: string,
+                    display: string
+                }
+            ]
+        },
+        ...,
+        {
+            name: string,
+            display: string,
+            description: string,
+            args: [
+                {
+                    description: string,
+                    display: string
+                }
+            ]
+        }
+    ]
 
-    Data: {
-        id: int,
-        email?: string,
-        data: Column[],
-        createdAt: date,
-    },
+=============== DATA ==============
 
-    Column: {
-        name: string,
-        data: int[],
-    },
-}
-
-############# API ###############
-
-1: POST api/data
+POST api/data
     Req: file
-    Req body: {
-        createdAt: 01-01-2017 12:12:12
-    }
     Res body: { 
         model.Data
     }
 
-3: GET api/data/<dataId>
+POST "/api/data/id":
     Req body: {
         columns: [
             "column1",
             "column2",
         ],
-        functions: [
+        singleFunctions: [
             {
                 name: "function_name1",
                 args: {
@@ -53,7 +59,8 @@ Models: {
                     arg2: 2
                 }
             },
-            [
+        ],
+        cascadFunctions: [
                 {
                     name: "function_name3",
                     args: {
@@ -71,6 +78,7 @@ Models: {
             ]
         ]
     }
+    
     Res body: {
         [
             {
@@ -85,58 +93,3 @@ Models: {
             }
         ]
     }
-
-4: PUT api/data/<dataId>
-    Req body: {
-        email: "ex@ex.com",
-        columns: [
-            "column1",
-            "column2",
-        ],
-        functions: [
-            {
-                name: "function_name1",
-                args: {
-                    arg1: 1,
-                    arg2: 2
-                }
-            },
-            ...,
-            {
-                name: "function_name2",
-                args: {
-                    arg1: 1,
-                    arg2: 2
-                }
-            },
-            [
-                {
-                    name: "function_name3",
-                    args: {
-                        arg1: 1,
-                        arg2: 2
-                    }
-                },
-                {
-                    name: "function_name4",
-                    args: {
-                        arg1: 1,
-                        arg2: 2
-                    }
-                }
-            ]
-        ]
-    }
-    Res body: { }
-
-2: GET api/functions
-    Req body: { }
-    Res body: {
-        [
-            model.Function,
-            ...,
-            model.Function
-        ]
-        
-    }
-    
