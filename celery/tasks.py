@@ -2,7 +2,7 @@ import os
 import time
 import math
 from celery import Celery 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import parse
 from functions_base import funcdict
 from mongoengine import connect
