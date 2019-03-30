@@ -10,15 +10,17 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+	console.log(action);
+
 	switch (action.type) {
 		case POST_FILE_REQUEST:
-			return { error: false, file: {} };
+			return { error: false };
 
 		case POST_FILE_SUCCESS:
-			return { error: false, file: action.payload };
+			return { error: false, ...action.payload };
 
 		case POST_FILE_FAILURE:
-			return { error: true, file: {} };
+			return { error: true };
 
 		default:
 			return state;

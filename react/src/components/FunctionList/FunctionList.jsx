@@ -1,19 +1,13 @@
 import React from "react";
 import "./FunctionList.css";
 import FunctionItem from "../FunctionItem";
+import { connect } from "react-redux";
 
-const funcs = [
-	{ name: "123", func: "x^2" },
-	{ name: "123", func: "x^2" },
-	{ name: "123", func: "x^2" },
-	{ name: "123", func: "x^2" },
-	{ name: "123", func: "x^2" },
-	{ name: "123", func: "x^2" },
-];
+const FunctionList = ({ functions }) => {
+	console.log(functions[0]);
 
-const FunctionList = () => {
-	const items = funcs.map(({ name, func }, i) => (
-		<FunctionItem key={i} name={name} func={func} />
+	const items = functions.map(({ name, args, ...props }) => (
+		<FunctionItem key={name} {...props} />
 	));
 
 	return (
@@ -27,4 +21,13 @@ const FunctionList = () => {
 	);
 };
 
-export default FunctionList;
+const mapStateToProps = state => ({
+	functions: state.functions,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(FunctionList);

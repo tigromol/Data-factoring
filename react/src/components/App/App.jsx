@@ -18,7 +18,7 @@ const App = ({ getFunctions }) => {
 		<Provider store={store}>
 			<main className="main">
 				<FunctionList />
-				{/* <ControlledChart /> */}
+				<ControlledChart />
 				<FileUploader />
 			</main>
 		</Provider>

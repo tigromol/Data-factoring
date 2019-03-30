@@ -4,7 +4,7 @@ import {
 	FETCH_FUNCTIONS_FAILURE,
 } from "../types";
 
-const initialState = {};
+const initialState = [];
 
 export default (state = initialState, action) => {
 	switch (action.type) {
@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
 
 		case FETCH_FUNCTIONS_SUCCESS:
 			const funcs = action.payload;
-			return { ...funcs };
+			return [...funcs];
 
 		case FETCH_FUNCTIONS_FAILURE:
 			return state;
