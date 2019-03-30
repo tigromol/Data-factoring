@@ -88,7 +88,47 @@ def preprocess(id):
                     'data': processed
                 })
     return jsonify(result), 200
+@data.route('/<id>', methods=['PUT'])
+def process():
+    result = []
+    req_body = request.get_json()
+    columns = req_body['columns']
+    functions = req_body['functions']
+    data = Data.objects.get(id=id).columns
+    print(f"data before process: {[column.name for column in data]}")
+    data = [column for column in data if column.name in columns]
 
+    print(f"data after process: {[column.name for column in data]}")
+    print(f"columns: {columns}")
+    print(f"functions: {functions}")
+
+
+    for column in data:
+        print(f"iter column: {column}")
+        for function in functions:
+            print(f"iter function: {function}")
+            if isinstance(function,list):
+                processed = [num for num in column['data'] if isinstance(num, (int, float))]
+                names = []
+                for subfunc in function:
+                    func = funcdict[subfunc['name']]['func']
+                    processed = func(inp=np.array(processed), **subfunc['args'])
+                    names.append(subfunc['name'])
+                result.append({
+                    'name': ' '.join(names),
+                    'column': column.name,
+                    'data': processed
+                })
+            else :
+                func = funcdict[function['name']]['func']
+                arr = [num for num in column['data'] if isinstance(num, (int, float))]
+                processed = func(inp=np.array(arr), **function['args'])
+                result.append({
+                    'name': function['name'], 
+                    'column': column.name, 
+                    'data': processed
+                })
+    return jsonify(result), 200
 
     
 
