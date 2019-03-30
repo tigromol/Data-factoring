@@ -23,7 +23,7 @@ def process(id,email,functions,columns):
     connect('datafactoring', host='mongo', port=27017, username='admin', password='admin')
     plt.subplots_adjust(wspace=2.2,hspace=2.2)
     result = []
-    file = Data.objects().get(id=id).file.readline()
+    file = Data.objects().get(id=id).file.get()
     print(Data.objects().get(id=id).file)
     print(dir(Data.objects().get(id=id).file))
     data = parse(file)

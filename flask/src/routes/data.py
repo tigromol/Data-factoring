@@ -32,9 +32,9 @@ def upload():
             created = datetime.datetime.now(),
             columns = cols
         )
-        new_data.file.put(req_file)
+        new_data.file.put(req_file, content_type='text/csv', filename=req_file.filename)
         new_data.save()
-
+        print(new_data.file.get())
         result = {
             'id': str(new_data.id),
             'data': lists_to_csv(new_data.columns)
