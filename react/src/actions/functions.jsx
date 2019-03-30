@@ -1,19 +1,20 @@
 import axios from "axios";
 import {
-	FETCH_CHART_FAILURE,
-	FETCH_CHART_REQUEST,
-	FETCH_CHART_SUCCESS,
+	FETCH_FUNCTIONS_REQUEST,
+	FETCH_FUNCTIONS_SUCCESS,
+	FETCH_FUNCTIONS_FAILURE,
 } from "../types/index";
 
-export const getChart = chartId => dispatch => {
-	dispatch({ type: FETCH_CHART_REQUEST });
+export const getFunctions = () => async dispatch => {
+	dispatch({ type: FETCH_FUNCTIONS_REQUEST });
+
 	try {
-		const { data } = axios.get(`/api/data/${chartId}`);
+		const { data } = await axios.get(`/api/functions/`);
 		dispatch({
-			type: FETCH_CHART_SUCCESS,
+			type: FETCH_FUNCTIONS_SUCCESS,
 			payload: data,
 		});
 	} catch (err) {
-		dispatch({ type: FETCH_CHART_FAILURE });
+		dispatch({ type: FETCH_FUNCTIONS_FAILURE });
 	}
 };

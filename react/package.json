@@ -2,7 +2,7 @@
 	"name": "client",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "http://server:5000",
+	"proxy": "http://flask:5000",
 	"dependencies": {
 		"axios": "^0.18.0",
 		"node-sass": "^4.11.0",

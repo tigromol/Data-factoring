@@ -6,6 +6,7 @@ import Spinner from "../Spinner";
 
 const ControlledChart = props => {
 	const { charts } = props;
+	const { data } = charts[0];
 	return (
 		<div className="chart">
 			<Chart
@@ -13,7 +14,7 @@ const ControlledChart = props => {
 				height={"100%"}
 				chartType="LineChart"
 				loader={<Spinner />}
-				data={charts[0].data}
+				data={data}
 				options={{
 					// Use the same chart area width as the control for axis alignment.
 					chartArea: { height: "90%", width: "90%" },
