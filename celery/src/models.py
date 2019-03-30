@@ -1,17 +1,17 @@
 from mongoengine import *
-from flask import jsonify
+# from flask import jsonify
 from bson.objectid import ObjectId
 
-class JsonQuerySet(QuerySet):
+# class JsonQuerySet(QuerySet):
 
-    def json(self):
-        return jsonify([post.dict() for post in self])
+#     def json(self):
+#         return jsonify([post.dict() for post in self])
 
 class ConvertableDocument(Document):
-    meta = {'queryset_class': JsonQuerySet, 'allow_inheritance': True, 'abstract': True,}
-
-    def json(self):
-        return jsonify(self.dict())
+    # meta = {'queryset_class': JsonQuerySet, 'allow_inheritance': True, 'abstract': True,}
+    meta = {'allow_inheritance': True, 'abstract': True}
+    # def json(self):
+    #     return jsonify(self.dict())
     
     def dict(self):
         res = self.to_mongo()

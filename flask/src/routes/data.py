@@ -16,7 +16,7 @@ def upload():
         return make_response('No file sent', 400)
 
     req_file = request.files['file']
-
+    print(req_file)
     if req_file.filename == '':
         return make_response('No file selected', 400)
         
@@ -89,11 +89,12 @@ def preprocess(id):
                     'data': processed
                 })
     return jsonify(result), 200
-@data.route('/<id>', methods=['PUT'])
-def process():
-    args = request.get_json()
-    task = celery.send_task('tasks.add', id=args['id'],email = args['email'], functions = args['functions'], columns = args['columns'])
-    return make_response(f"{task.id}", 200)    
+
+@data.route('/<dataId>', methods=['PUT'])
+def process(dataId):
+    req = request.get_json()
+    task = celery.send_task('tasks.add', args=(dataId, req['email'], req['functions'], req['columns']))
+    return make_response(f"{task.id}", 200)
     
 
 
