@@ -3,6 +3,7 @@ import datetime
 from flask import Blueprint, make_response, request, jsonify
 from models import Column, Data
 from utils.parse import parse
+from utils.make_celery import celery
 from werkzeug.utils import secure_filename
 from Funcdicts.functions_base import funcdict
 import numpy as np
@@ -15,7 +16,7 @@ def upload():
         return make_response('No file sent', 400)
 
     req_file = request.files['file']
-
+    print(req_file)
     if req_file.filename == '':
         return make_response('No file selected', 400)
         
@@ -89,7 +90,11 @@ def preprocess(id):
                 })
     return jsonify(result), 200
 
-
+@data.route('/<dataId>', methods=['PUT'])
+def process(dataId):
+    req = request.get_json()
+    task = celery.send_task('tasks.add', args=(dataId, req['email'], req['functions'], req['columns']))
+    return make_response(f"{task.id}", 200)
     
 
 

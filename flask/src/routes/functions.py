@@ -8,7 +8,14 @@ functions = Blueprint('functions', __name__)
 def getfunctions():
     result = []
     for key, value in funcdict.items():
-        result.append({'name':key,'display':value['display'],'args':value['args']})
+        result.append(
+            {
+                'name': key,
+                'display': value['display'],
+                'description': value['description'],
+                'args': value['args']
+            }
+        )
     return jsonify(result), 200
 
 

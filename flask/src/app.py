@@ -18,13 +18,9 @@ from routes.data import data
 from routes.functions import functions
 from routes.tests import tests
 
-app.register_blueprint(data, url_prefix='/api/data/') 
-app.register_blueprint(functions, url_prefix='/api/functions/') 
+app.register_blueprint(data, url_prefix='/api/data/')
+app.register_blueprint(functions, url_prefix='/api/functions/')
 app.register_blueprint(tests, url_prefix='/api/tests/')
-
-def proc(arr,args):
-    for i in args:
-        arr = i(arr)
 
 if __name__ == '__main__':
     app.run()
