@@ -20,7 +20,7 @@ const FunctionList = () => {
 		<div className="function-list">
 			<h2>Functions</h2>
 			{items}
-			<div onClick={123} className="function-add-btn">
+			<div onClick={() => console.log(123)} className="function-add-btn">
 				Add new
 			</div>
 		</div>

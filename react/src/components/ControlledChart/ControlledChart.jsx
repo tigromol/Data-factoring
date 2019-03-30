@@ -12,7 +12,7 @@ const ControlledChart = props => {
 				width={"100%"}
 				height={"100%"}
 				chartType="LineChart"
-				// loader={<Spinner />}
+				loader={<Spinner />}
 				data={charts[0].data}
 				options={{
 					// Use the same chart area width as the control for axis alignment.

@@ -12,7 +12,7 @@ class App extends Component {
 			<Provider store={store}>
 				<main className="main">
 					<FunctionList />
-					{/* <ControlledChart /> */}
+					<ControlledChart />
 					<FileUploader />
 				</main>
 			</Provider>
