@@ -34,7 +34,10 @@ def upload():
         new_data.file.put(req_file)
         new_data.save()
 
-        result = lists_to_csv(new_data.columns)
+        result = {
+            'id': str(new_data.id),
+            'data': lists_to_csv(new_data.columns)
+        }
         return jsonify(result), 200
 
 def lists_to_csv(columns):
@@ -51,11 +54,20 @@ def preprocess(id):
     columns = req_body['columns']
     functions = req_body['functions']
     data = Data.objects.get(id=id).columns
+    print(f"data before process: {[column.name for column in data]}")
     data = [column for column in data if column.name in columns]
+
+    print(f"data after process: {[column.name for column in data]}")
+    print(f"columns: {columns}")
+    print(f"functions: {functions}")
+
+
     for column in data:
+        print(f"iter column: {column}")
         for function in functions:
+            print(f"iter function: {function}")
             if isinstance(function,list):
-                processed = list(column['data'])
+                processed = [num for num in column['data'] if isinstance(num, (int, float))]
                 names = []
                 for subfunc in function:
                     func = funcdict[subfunc['name']]['func']
@@ -68,7 +80,8 @@ def preprocess(id):
                 })
             else :
                 func = funcdict[function['name']]['func']
-                processed = func(inp=np.array(column['data']), **function['args'])
+                arr = [num for num in column['data'] if isinstance(num, (int, float))]
+                processed = func(inp=np.array(arr), **function['args'])
                 result.append({
                     'name': function['name'], 
                     'column': column.name, 

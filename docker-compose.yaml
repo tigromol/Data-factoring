@@ -5,15 +5,15 @@ x-celery_config: &celery_config
   RESULT_BACKEND: redis://redis:6379/0
 
 services:
-  react:
-    build:
-      context: ./react
-    volumes:
-      - ./react/src:/app/src
-      - /app/node_modules
-    ports:
-      - "3000:3000"
-      - "35729:35729"
+  # react:
+  #   build:
+  #     context: ./react
+  #   volumes:
+  #     - ./react/src:/app/src
+  #     - /app/node_modules
+  #   ports:
+  #     - "3000:3000"
+  #     - "35729:35729"
   mongo:
     build:
       context: ./mongo

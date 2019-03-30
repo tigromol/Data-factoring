@@ -35,7 +35,7 @@ def amplitude(**kwargs):
     '''
     {'inp' : 'input vector','step' : 'step interval'}
     '''
-    return kwargs['inp'][kwargs['step']:] - kwargs['inp'][:kwargs['step']]
+    return (kwargs['inp'][kwargs['step']:] - kwargs['inp'][:-kwargs['step']]).tolist()
 
 
 
@@ -47,7 +47,7 @@ def matrixlam(**kwargs):
    '''
     data = []
     for i in kwargs['inp']:
-        data.append(kwargs['lam'](**kwargs))
+        data.append(funcdict[kwargs['func']]['func'](**kwargs))
     return data
 
 def matrixfunc(**kwargs):
@@ -64,7 +64,7 @@ def matrixize(**kwargs):
     {'inp' : 'input vector','step' : 'range for matrixation (e.g step = 3 resolves in matrix len(inp) X 3)'}
     '''
     data = [[0]]
-    for i in range(kwargs['step']):
+    for i in range(int(kwargs['step'])):
         data.append(kwargs['func'](inp = kwargs['inp'],step = i))
     return data[1:]
 
@@ -73,7 +73,7 @@ def histo(**kwargs):
     '''
     { 'inp' : 'input vector','bins' : 'number of bins'}
     '''
-    return np.histogram(kwargs['inp'],kwargs['bins'],**kwargs)
+    return np.histogram(kwargs['inp'],kwargs['bins'])#,**kwargs)
 ## Lambda functions
 def mult(**kwargs):
     '''
