@@ -40,24 +40,14 @@ def process(id,email,functions,columns):
                     func = funcdict[subfunc['name']]['func']
                     processed = func(inp=np.array(processed), **subfunc['args'])
                     names.append(subfunc['name'])
-                result.append({
-                    'name': ' '.join(names),
-                    'column': column["name"],
-                    'data': processed
-                })
+                result[f'name:{column.name} functions:{' '.join(names)}'] = processed
             else :
                 func = funcdict[function['name']]['func']
                 arr = [num for num in column['data'] if isinstance(num, (int, float))]
                 processed = func(inp=np.array(arr), **function['args'])
-                result.append({
-                    'name': function['name'], 
-                    'column': column["name"], 
-                    'data': processed
-                })
-    tmpdict = {}
-    for res in result:
-        tmpdict[f"function: {res['name']} name: {res['column']}"] = res['data']
-    df = DataFrame.from_dict(list(tmpdict.items()))
+                result[f'name:{column.name} functions:{function.name}'] = processed
+    
+    df = DataFrame.from_dict(result)
     df.to_excel(f"data/{id}.xlsx")
     df.to_csv(f"data/{id}.csv")
     print(math.ceil(math.sqrt(df.size)))
