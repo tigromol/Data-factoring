@@ -47,6 +47,7 @@ POST api/data:
     Res body: {
         "id": "5ca0e7472a42f1000c694ec0",
         "type": 1,
+        "name": "Raw data",
         "data": [
             [
                 "X",
@@ -114,7 +115,8 @@ POST "/api/data/id":
     Res body: [
         {
             "name": "mean",
-            "type": 0
+            "type": 0,
+            "name": "Raw data",
             "data": [
                 [
                     "X",
@@ -131,6 +133,7 @@ POST "/api/data/id":
         {
             "name": "amplitude",
             "type": 1,
+            "name": "Raw data",
             "data": [
                 [
                     "X",

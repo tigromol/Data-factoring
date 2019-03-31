@@ -37,6 +37,7 @@ def upload():
         new_data.save()
         result = {
             'id': str(new_data.id),
+            'name': 'Raw data',
             'data': lists_to_csv([{'name': column.name, 'data': column.data} for column in new_data.columns]),
             'type': constants.LINE_CHART
         }
