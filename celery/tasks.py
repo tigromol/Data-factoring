@@ -50,10 +50,8 @@ def process(id,email,columns,functions):
                 arr = [num for num in column['data'] if isinstance(num, (int, float))]
                 processed = func(inp=np.array(arr), **function['args'])
                 result[f'name:{column.name} functions:{function.name}'] = processed
-    tmpdict = {}
-    for i in result:
-        tmpdict[f'function: {i.name} name: {i.column}'] = i.data
-    df = DataFrame(tmpdict)
+    
+    df = DataFrame.from_dict(result)
     df.to_excel(f"data/{id}.xlsx")
     df.to_csv(f"data/{id}.xlsx")
 
