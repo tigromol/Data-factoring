@@ -24,13 +24,11 @@ def process(id,email,functions,columns):
     plt.subplots_adjust(wspace=2.2,hspace=2.2)
     result = []
     file = Data.objects().get(id=id).file.get()
-    print(Data.objects().get(id=id).file)
-    print(dir(Data.objects().get(id=id).file))
     data = parse(file)
-    cols = []
-    for k, v in data.items():
-        cols.append(Column(name = k, data = v))
-    data = [column for column in data if column.name in columns]
+    print(data)
+    data = [{'name': k, 'data': v} for k, v in data.items() if k in columns]
+    print('after process')
+    print(data)
     for column in data:
         print(f"iter column: {column}")
         for function in functions:
@@ -44,7 +42,7 @@ def process(id,email,functions,columns):
                     names.append(subfunc['name'])
                 result.append({
                     'name': ' '.join(names),
-                    'column': column.name,
+                    'column': column["name"],
                     'data': processed
                 })
             else :
@@ -53,23 +51,24 @@ def process(id,email,functions,columns):
                 processed = func(inp=np.array(arr), **function['args'])
                 result.append({
                     'name': function['name'], 
-                    'column': column.name, 
+                    'column': column["name"], 
                     'data': processed
                 })
     tmpdict = {}
-    for i in result:
-        tmpdict[f'function: {i.name} name: {i.column}'] = i.data
-    df = DataFrame(tmpdict)
+    for res in result:
+        tmpdict[f"function: {res['name']} name: {res['column']}"] = res['data']
+    df = DataFrame.from_dict(list(tmpdict.items()))
     df.to_excel(f"data/{id}.xlsx")
-    df.to_csv(f"data/{id}.xlsx")
-
-    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size)))*3, dpi=800, facecolor='w', edgecolor='k')
-    i=1
+    df.to_csv(f"data/{id}.csv")
+    print(math.ceil(math.sqrt(df.size)))
+    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size))), dpi=800, facecolor='w', edgecolor='k')
+    j = 1
     for i in df:
-        plt.subplot(math.ceil(math.sqrt(df.size)),math.ceil(math.sqrt(df.size)),i)
-        plt.plot(df['i'].values())
+        plt.subplot(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size)), j)
+        print(list(df[i].values))
+        plt.plot(list(df[i].values))
         plt.title(f'{str(i)}')
-        i +=1
+        j += 1
     plt.savefig(f'images/{id}.png')
     plt.clf()
     plt.close()

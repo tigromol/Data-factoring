@@ -16,7 +16,11 @@ def upload():
         return make_response('No file sent', 400)
 
     req_file = request.files['file']
-    print(req_file)
+    print(req_file.stream)
+    print(dir(req_file.stream))
+    #with open(req_file.stream) as f:
+    print('lines')
+    #print(req_file.stream.read())
     if req_file.filename == '':
         return make_response('No file selected', 400)
         
@@ -32,9 +36,29 @@ def upload():
             created = datetime.datetime.now(),
             columns = cols
         )
-        new_data.file.put(req_file, content_type='text/csv', filename=req_file.filename)
+        req_file.stream.seek(0)
+        new_data.file.put(req_file, content_type='text/csv', filename=req_file.filename, encoding='utf-8')
         new_data.save()
+        print('file')
+        print(new_data.file)
+        print(dir(new_data.file))
+        print()
+
+        print('get')
         print(new_data.file.get())
+        print(dir(new_data.file.get()))
+        print()
+
+        print('readline')
+        print(str(new_data.file.get().readline()))
+        print(dir(new_data.file.get().readline()))
+        print()
+
+        print('fs')
+        print(new_data.file.fs)
+        print(dir(new_data.file.fs))
+        print()
+
         result = {
             'id': str(new_data.id),
             'data': lists_to_csv(new_data.columns)
