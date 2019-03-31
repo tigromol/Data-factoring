@@ -27,7 +27,7 @@ def process(id,email,columns,functions):
     plt.subplots_adjust(wspace=2.2,hspace=2.2)
 
     
-    result = []
+    result = {}
     data = parse.parse(Data.file.read(id=id))
     cols = []
     for k, v in data.items():
@@ -44,20 +44,12 @@ def process(id,email,columns,functions):
                     func = funcdict[subfunc['name']]['func']
                     processed = func(inp=np.array(processed), **subfunc['args'])
                     names.append(subfunc['name'])
-                result.append({
-                    'name': ' '.join(names),
-                    'column': column.name,
-                    'data': processed
-                })
+                result[f'name:{column.name} functions:{' '.join(names)}'] = processed
             else :
                 func = funcdict[function['name']]['func']
                 arr = [num for num in column['data'] if isinstance(num, (int, float))]
                 processed = func(inp=np.array(arr), **function['args'])
-                result.append({
-                    'name': function['name'], 
-                    'column': column.name, 
-                    'data': processed
-                })
+                result[f'name:{column.name} functions:{function.name}'] = processed
     tmpdict = {}
     for i in result:
         tmpdict[f'function: {i.name} name: {i.column}'] = i.data
