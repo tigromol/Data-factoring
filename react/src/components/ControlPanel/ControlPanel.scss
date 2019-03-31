@@ -5,4 +5,30 @@
 	background: #eee;
 	height: 5rem;
 	display: inline-block;
+
+	.btn-group {
+		display: flex;
+		height: 100%;
+		width: 100%;
+		align-items: center;
+
+		.btn {
+			width: 10rem;
+			box-sizing: border-box;
+			background: #3897f0;
+			margin-left: 3.5rem;
+			border-radius: 5px;
+			padding: 0.25rem;
+			text-align: center;
+			transition: 0.2s background;
+			color: white;
+			font-weight: bold;
+			font-size: 1.1rem;
+			cursor: pointer;
+
+			span &:hover {
+				background-color: #3480be;
+			}
+		}
+	}
 }

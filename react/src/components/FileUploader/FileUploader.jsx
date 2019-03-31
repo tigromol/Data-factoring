@@ -12,7 +12,7 @@ const FileUploader = ({ uploadFile }) => {
 	};
 
 	return (
-		<div className="file-uploader">
+		<div className="btn">
 			<input
 				type="file"
 				onChange={fileSelectHandler}
@@ -20,7 +20,7 @@ const FileUploader = ({ uploadFile }) => {
 				id="file"
 				className="inputfile"
 			/>
-			<label htmlFor="file">Upload new image</label>
+			<label htmlFor="file">Upload</label>
 		</div>
 	);
 };
