@@ -1,5 +1,9 @@
 ############# MODELS ###############
  
+NUMBER: 0
+LINE: 1
+HISTOGRAM: 2
+
 =============== FUNCS ==============
 GET "/api/functions":
     Req: { }

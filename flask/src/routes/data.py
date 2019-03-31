@@ -103,7 +103,7 @@ def preprocess(id):
         result.append(
             {
                 'name': ', '.join(function_names),
-                'data': lists_to_csv(processed_data) if return_type != constants.NUMBER else processed_data,
+                'data': lists_to_csv(processed_data),
                 'type': return_type
             }
         )
@@ -113,7 +113,7 @@ def preprocess(id):
 @data.route('/<dataId>', methods=['PUT'])
 def process(dataId):
     req = request.get_json()
-    task = celery.send_task('tasks.add', args=(dataId, req['email'], req['functions'], req['columns']))
+    task = celery.send_task('tasks.add', args=(dataId, req['email'], req['singleFunctions'], req['cascadeFunctions'], req['columns']))
     return make_response(f"Ok", 200)
     
 
