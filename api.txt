@@ -1,5 +1,5 @@
 ############# MODELS ###############
-
+ 
 =============== FUNCS ==============
 GET "/api/functions":
     req: -
@@ -11,7 +11,8 @@ GET "/api/functions":
             args: [
                 {
                     description: string,
-                    display: string
+                    display: string,
+                    name: "div"
                 }
             ]
         },
@@ -23,7 +24,13 @@ GET "/api/functions":
             args: [
                 {
                     description: string,
-                    display: string
+                    display: string,
+                    name: "div"
+                },
+                {
+                    description: string,
+                    display: string,
+                    name: "inp"
                 }
             ]
         }

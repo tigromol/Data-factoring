@@ -1,0 +1,44 @@
+.function-list {
+	width: 30%;
+	max-height: 100vh;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	overflow: scroll;
+	float: right;
+	border: 1px solid #ccc;
+	background: #ececec;
+
+	.function-title {
+		background: #c7c7c7;
+		position: fixed;
+		width: 29.4%;
+		height: 5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+	}
+
+	.function-items {
+		margin-top: 5rem;
+		padding: 0 3rem 0 1rem;
+	}
+
+	.function-add-btn {
+		width: 35%;
+		background: #4575ce;
+		text-align: center;
+		color: white;
+		font-size: 1.6rem;
+		padding: 1rem 2rem;
+		border-radius: 5px;
+		margin: 1.5rem 0;
+		cursor: pointer;
+		transition: 0.2s background;
+	}
+
+	.function-add-btn:hover {
+		background: #305cad;
+	}
+}
