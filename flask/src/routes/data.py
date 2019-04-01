@@ -1,5 +1,5 @@
 import datetime
-
+from itertools import zip_longest
 from flask import Blueprint, make_response, request, jsonify
 from models import Column, Data
 from utils.parse import parse
@@ -43,14 +43,21 @@ def upload():
         }
         return jsonify(result), 200
 
-def lists_to_csv(columns):
+def lists_to_csv(columns, is_histo=False):
     result = []
     for column in columns:
         if not isinstance(column['data'], (list, dict)):
             column['data'] = [column['data']]
+
+    columns = [column for column in columns if not any([isinstance(num, str) for num in column['data']])]
+    if len(columns) == 0:
+        return []
+
     max_length = max(*[len(column['data']) for column in columns])
-    result.append(["X", *[column['name'] for column in columns]])
-    result.extend(list(zip(list(range(max_length)), *[column['data'] for column in columns])))
+    if not is_histo:
+        result.append(["X", *[column['name'] for column in columns]])
+        
+    result.extend(list(zip_longest(list(range(max_length)), *[column['data'] for column in columns], fillvalue='')))
     return result
 
 @data.route('/<id>', methods=['GET'])
@@ -75,6 +82,7 @@ def preprocess(id):
         temp_data = []
         func = funcdict[function['name']]['func']
         return_type = funcdict[function['name']]['type']
+        is_histo = return_type == constants.HISTOGRAM
         for column in data:
             processed = func(inp=np.array(column['data']), **function['args'])
             temp_data.append({
@@ -84,7 +92,7 @@ def preprocess(id):
         result.append(
             {
                 'name': function['name'], 
-                'data': lists_to_csv(temp_data),
+                'data': lists_to_csv(temp_data, is_histo),
                 'type': return_type
             }
         )
@@ -93,9 +101,11 @@ def preprocess(id):
         function_names = []
         temp_processed = {}
         return_type = -1
+        is_histo = False
         for function in functions:
             func = funcdict[function['name']]['func']
             return_type = funcdict[function['name']]['type']
+            is_histo = return_type == constants.HISTOGRAM
             function_names.append(function['name'])
             for column in data:
                 processed = func(inp=np.array(column['data']), **function['args'])
@@ -104,7 +114,7 @@ def preprocess(id):
         result.append(
             {
                 'name': ', '.join(function_names),
-                'data': lists_to_csv(processed_data),
+                'data': lists_to_csv(processed_data, is_histo),
                 'type': return_type
             }
         )
