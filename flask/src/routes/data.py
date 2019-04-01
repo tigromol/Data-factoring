@@ -1,11 +1,12 @@
 import datetime
-
+from itertools import zip_longest
 from flask import Blueprint, make_response, request, jsonify
 from models import Column, Data
 from utils.parse import parse
 from utils.make_celery import celery
 from werkzeug.utils import secure_filename
 from Funcdicts.functions_base import funcdict
+import constants as constants
 import numpy as np
 
 data = Blueprint('data', __name__)
@@ -16,7 +17,6 @@ def upload():
         return make_response('No file sent', 400)
 
     req_file = request.files['file']
-
     if req_file.filename == '':
         return make_response('No file selected', 400)
         
@@ -32,68 +32,100 @@ def upload():
             created = datetime.datetime.now(),
             columns = cols
         )
-        new_data.file.put(req_file)
+        req_file.stream.seek(0)
+        new_data.file.put(req_file, content_type='text/csv', filename=req_file.filename, encoding='utf-8')
         new_data.save()
-
         result = {
             'id': str(new_data.id),
-            'data': lists_to_csv(new_data.columns)
+            'name': 'Raw data',
+            'data': lists_to_csv([{'name': column.name, 'data': column.data} for column in new_data.columns]),
+            'type': constants.LINE_CHART
         }
         return jsonify(result), 200
 
-def lists_to_csv(columns):
+def lists_to_csv(columns, is_histo=False):
     result = []
-    max_length = max(*[len(column.data) for column in columns])
-    result.append(["X", *[column.name for column in columns]])
-    result.extend(list(zip(list(range(max_length)), *[column.data for column in columns])))
+    for column in columns:
+        if not isinstance(column['data'], (list, dict)):
+            column['data'] = [column['data']]
+
+    columns = [column for column in columns if not any([isinstance(num, str) for num in column['data']])]
+    if len(columns) == 0:
+        return []
+
+    max_length = max(*[len(column['data']) for column in columns])
+    if not is_histo:
+        result.append(["X", *[column['name'] for column in columns]])
+        
+    result.extend(list(zip_longest(list(range(max_length)), *[column['data'] for column in columns], fillvalue='')))
     return result
 
 @data.route('/<id>', methods=['GET'])
 def preprocess(id):
-    result = []
     req_body = request.get_json()
-    columns = req_body['columns']
-    functions = req_body['functions']
+
+    filter_columns = req_body['columns']
+    single_functions = req_body['singleFunctions']
+    cascade_functions = req_body['cascadeFunctions']
+
     data = Data.objects.get(id=id).columns
-    print(f"data before process: {[column.name for column in data]}")
-    data = [column for column in data if column.name in columns]
+    data = [
+        {
+            'name': column.name, 
+            'data': [num for num in column.data if isinstance(num, (int, float))]
+        } for column in data if column.name in filter_columns
+    ]
 
-    print(f"data after process: {[column.name for column in data]}")
-    print(f"columns: {columns}")
-    print(f"functions: {functions}")
+    result = []
 
+    for function in single_functions:
+        temp_data = []
+        func = funcdict[function['name']]['func']
+        return_type = funcdict[function['name']]['type']
+        is_histo = return_type == constants.HISTOGRAM
+        for column in data:
+            processed = func(inp=np.array(column['data']), **function['args'])
+            temp_data.append({
+                'name': column['name'],
+                'data': processed
+            })
+        result.append(
+            {
+                'name': function['name'], 
+                'data': lists_to_csv(temp_data, is_histo),
+                'type': return_type
+            }
+        )
 
-    for column in data:
-        print(f"iter column: {column}")
+    for functions in cascade_functions:
+        function_names = []
+        temp_processed = {}
+        return_type = -1
+        is_histo = False
         for function in functions:
-            print(f"iter function: {function}")
-            if isinstance(function,list):
-                processed = [num for num in column['data'] if isinstance(num, (int, float))]
-                names = []
-                for subfunc in function:
-                    func = funcdict[subfunc['name']]['func']
-                    processed = func(inp=np.array(processed), **subfunc['args'])
-                    names.append(subfunc['name'])
-                result.append({
-                    'name': ' '.join(names),
-                    'column': column.name,
-                    'data': processed
-                })
-            else :
-                func = funcdict[function['name']]['func']
-                arr = [num for num in column['data'] if isinstance(num, (int, float))]
-                processed = func(inp=np.array(arr), **function['args'])
-                result.append({
-                    'name': function['name'], 
-                    'column': column.name, 
-                    'data': processed
-                })
+            func = funcdict[function['name']]['func']
+            return_type = funcdict[function['name']]['type']
+            is_histo = return_type == constants.HISTOGRAM
+            function_names.append(function['name'])
+            for column in data:
+                processed = func(inp=np.array(column['data']), **function['args'])
+                temp_processed[column['name']] = processed
+        processed_data = [{'name': k, 'data': v} for k, v in temp_processed.items()]
+        result.append(
+            {
+                'name': ', '.join(function_names),
+                'data': lists_to_csv(processed_data, is_histo),
+                'type': return_type
+            }
+        )
+
     return jsonify(result), 200
-@data.route('/<id>', methods=['PUT'])
-def process():
-    args = request.get_json()
-    task = celery.send_task('tasks.add', id=args['id'],email = args['email'], functions = args['functions'], columns = args['columns'])
-    return make_response(f"{task.id}", 200)    
+
+@data.route('/<dataId>', methods=['PUT'])
+def process(dataId):
+    req = request.get_json()
+    task = celery.send_task('tasks.add', args=(dataId, req['email'], req['singleFunctions'], req['cascadeFunctions'], req['columns']))
+    return make_response(f"Ok", 200)
     
 
 
