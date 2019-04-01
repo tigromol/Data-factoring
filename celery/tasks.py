@@ -56,12 +56,12 @@ def process(id,email,columns,functions):
     df.to_csv(f"data/{id}.xlsx")
 
     plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])))*3, dpi=800, facecolor='w', edgecolor='k')
-    i=1
+    j=1
     for i in df:
-        plt.subplot(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])),i)
-        plt.plot(df['i'].values())
+        plt.subplot(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])),j)
+        plt.plot(df[i].values())
         plt.title(f'{str(i)}')
-        i +=1
+        j +=1
     plt.savefig(f'images/{id}.png')
     plt.clf()
     plt.close()
