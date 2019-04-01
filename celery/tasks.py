@@ -55,7 +55,7 @@ def process(id,email,columns,functions):
     df.to_excel(f"data/{id}.xlsx")
     df.to_csv(f"data/{id}.xlsx")
 
-    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])))*3, dpi=800, facecolor='w', edgecolor='k')
+    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1]))*3), dpi=800, facecolor='w', edgecolor='k')
     j=1
     for i in df:
         plt.subplot(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])),j)
