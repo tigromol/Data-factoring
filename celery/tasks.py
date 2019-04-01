@@ -44,18 +44,18 @@ def process(id,email,columns,functions):
                     func = funcdict[subfunc['name']]['func']
                     processed = func(inp=np.array(processed), **subfunc['args'])
                     names.append(subfunc['name'])
-                result[f'name:{column.name} functions:{' '.join(names)}'] = processed
+                result['name:{} functions:{}'.format(column.name,' '.join(names))] = processed
             else :
                 func = funcdict[function['name']]['func']
                 arr = [num for num in column['data'] if isinstance(num, (int, float))]
                 processed = func(inp=np.array(arr), **function['args'])
-                result[f'name:{column.name} functions:{function.name}'] = processed
+                result['name:{} functions:{}'.format(column.name,functions.name)] = processed
     
     df = DataFrame.from_dict(result)
     df.to_excel(f"data/{id}.xlsx")
     df.to_csv(f"data/{id}.xlsx")
 
-    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size)))*3, dpi=800, facecolor='w', edgecolor='k')
+    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])))*3, dpi=800, facecolor='w', edgecolor='k')
     i=1
     for i in df:
         plt.subplot(math.ceil(math.sqrt(df.size)),math.ceil(math.sqrt(df.size)),i)
