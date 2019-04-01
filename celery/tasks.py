@@ -58,7 +58,7 @@ def process(id,email,columns,functions):
     plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])))*3, dpi=800, facecolor='w', edgecolor='k')
     i=1
     for i in df:
-        plt.subplot(math.ceil(math.sqrt(df.size)),math.ceil(math.sqrt(df.size)),i)
+        plt.subplot(math.ceil(math.sqrt(df.shape[1])), math.ceil(math.sqrt(df.shape[1])),i)
         plt.plot(df['i'].values())
         plt.title(f'{str(i)}')
         i +=1
