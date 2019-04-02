@@ -1,6 +1,7 @@
 import os
 import time
 import math
+import yagmail
 import shutil
 from celery import Celery 
 import matplotlib.pyplot as plt
@@ -84,3 +85,22 @@ def process(id, email, single_functions, cascade_functions, filter_columns):
 
     shutil.make_archive(str(id), 'zip', f'{id}')
     shutil.rmtree(f'/{id}', ignore_errors=True)
+
+    print(f"email: {email}")
+    print(f"id: {id}")
+
+    send_mail(f"{id}.zip", email)
+
+def send_mail(filename, receiver):
+    body = "Hello there from Yagmail"
+    login = os.environ.get('MAIL_LOGIN')
+    password = os.environ.get('MAIL_PASSWORD')
+    print(f"login: {login}")
+    print(f"password: {password}")
+    print(f"reciever: {receiver}")
+    yag = yagmail.SMTP(login, password)
+    yag.send(
+        to=receiver,
+        subject="Datafactoring results",
+        attachments=filename,
+)

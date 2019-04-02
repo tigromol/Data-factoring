@@ -35,7 +35,11 @@ services:
   celery:
     build:
       context: ./celery
-    environment: *celery_config
+    environment: 
+      <<: *celery_config
+      MAIL_LOGIN: omega.datafactoring@gmail.com
+    env_file:
+      - ./.env
     volumes:
       - ./celery/src:/queue
     depends_on:
