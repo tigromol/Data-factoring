@@ -19,43 +19,58 @@ CELERY_RESULT_BACKEND = os.environ.get('RESULT_BACKEND', 'redis://localhost:6379
 celery = Celery('tasks', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
 @celery.task(name='tasks.add')
-def process(id,email,functions,columns):
+def process(id, email, single_functions, cascade_functions, filter_columns):
     connect('datafactoring', host='mongo', port=27017, username='admin', password='admin')
     plt.subplots_adjust(wspace=2.2,hspace=2.2)
-    result = []
+    result = {}
     file = Data.objects().get(id=id).file.get()
     data = parse(file)
-    print(data)
-    data = [{'name': k, 'data': v} for k, v in data.items() if k in columns]
-    print('after process')
-    print(data)
-    for column in data:
-        print(f"iter column: {column}")
+
+    data = [
+        {
+            'name': column, 
+            'data': [num for num in data if isinstance(num, (int, float))]
+        } for column, data in data.items() if column in filter_columns
+    ]
+
+    result = {}
+
+    for function in single_functions:
+        temp_data = []
+        func = funcdict[function['name']]['func']
+        return_type = funcdict[function['name']]['type']
+        for column in data:
+            processed = func(inp=np.array(column['data']), **function['args'])
+            temp_data.append({
+                'name': column['name'],
+                'data': processed
+            })
+
+        for column in temp_data:
+            result[f"column: {column['name']} function: {function['name']}"] = column['data']
+
+    for functions in cascade_functions:
+        function_names = []
+        temp_processed = {}
+        return_type = -1
         for function in functions:
-            print(f"iter function: {function}")
-            if isinstance(function,list):
-                processed = [num for num in column['data'] if isinstance(num, (int, float))]
-                names = []
-                for subfunc in function:
-                    func = funcdict[subfunc['name']]['func']
-                    processed = func(inp=np.array(processed), **subfunc['args'])
-                    names.append(subfunc['name'])
-                result[f'name:{column.name} functions:{' '.join(names)}'] = processed
-            else :
-                func = funcdict[function['name']]['func']
-                arr = [num for num in column['data'] if isinstance(num, (int, float))]
-                processed = func(inp=np.array(arr), **function['args'])
-                result[f'name:{column.name} functions:{function.name}'] = processed
+            func = funcdict[function['name']]['func']
+            return_type = funcdict[function['name']]['type']
+            function_names.append(function['name'])
+            for column in data:
+                processed = func(inp=np.array(column['data']), **function['args'])
+                temp_processed[column['name']] = processed
+        processed_data = [{'name': k, 'data': v} for k, v in temp_processed.items()]
+        for column in processed_data:
+            result[f"column: {column['name']} functions: {', '.join(function_names)}"] = column['data']
     
     df = DataFrame.from_dict(result)
     df.to_excel(f"data/{id}.xlsx")
     df.to_csv(f"data/{id}.csv")
-    print(math.ceil(math.sqrt(df.size)))
     plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size))), dpi=800, facecolor='w', edgecolor='k')
     j = 1
     for i in df:
         plt.subplot(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size)), j)
-        print(list(df[i].values))
         plt.plot(list(df[i].values))
         plt.title(f'{str(i)}')
         j += 1

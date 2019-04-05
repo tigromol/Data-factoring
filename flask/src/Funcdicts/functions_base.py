@@ -1,6 +1,6 @@
 import numpy as np
 import scipy as sc
-
+import constants as constants
 
 
 ## Basic vector functions (end functions)
@@ -106,25 +106,29 @@ funcdict = {
         'func': mean,
         'args': [],
         'description': '',
-        'display': 'Mean value'
+        'display': 'Mean value',
+        'type': constants.NUMBER
     },
     'var': {
         'func': var,
         'args': [],
         'description': '',
-        'display': 'Variance value'
+        'display': 'Variance value',
+        'type': constants.NUMBER
     },
     'skew': {
         'func': skew,
         'args': [],
         'description': '',
-        'display': 'Skewness value'
+        'display': 'Skewness value',
+        'type': constants.NUMBER
     },
     'kurtosis': {
         'func':kurtosis,
         'args': [],
         'description': '',
-        'display': 'Kurtosis value'
+        'display': 'Kurtosis value',
+        'type': constants.NUMBER
     },
     'amplitude': {
         'func':amplitude,
@@ -136,49 +140,50 @@ funcdict = {
             }
         ],
         'description': '',
-        'display': 'Amplitudes of lit'
+        'display': 'Amplitudes of lit',
+        'type': constants.LINE_CHART
     },
-    'matrixlam': {
-        'func':matrixlam,
-        'args': [
-            {
-                'name': 'lab',
-                'description':'lambda function from dict (that which evaluate in list',
-                'display': 'lab'
-            }
-        ],
-        'description': '',
-        'display': 'Evaluate each column in matrix with lambda function'
-    },
-    'matrixfunc': {
-        'func': matrixfunc,
-        'args': [
-            {
-                'name': 'func',
-                'display': 'func',
-                'description' :'Function to apply to columns in matrix'
-            }
-        ],
-        'display': 'Compute each column in matrix with function',
-        'description': ''
-    },
-    'matrixize': {
-        'func':matrixize,
-        'args': [
-            {
-                'name': 'step',
-                'description':'numbers of iterations to form a matrix (e.g step=3 evalute in len(inp) x 3 matrix',
-                'display': 'step'
-            },
-            {
-                'name': 'func',
-                'description':'function to apply',
-                'display': 'func'
-            }
-        ],
-        'description': 'Compute matrix for diff steps of function',
-        'display': 'matrixize'
-    },
+    # 'matrixlam': {
+    #     'func':matrixlam,
+    #     'args': [
+    #         {
+    #             'name': 'lab',
+    #             'description':'lambda function from dict (that which evaluate in list',
+    #             'display': 'lab'
+    #         }
+    #     ],
+    #     'description': '',
+    #     'display': 'Evaluate each column in matrix with lambda function'
+    # },
+    # 'matrixfunc': {
+    #     'func': matrixfunc,
+    #     'args': [
+    #         {
+    #             'name': 'func',
+    #             'display': 'func',
+    #             'description' :'Function to apply to columns in matrix'
+    #         }
+    #     ],
+    #     'display': 'Compute each column in matrix with function',
+    #     'description': ''
+    # },
+    # 'matrixize': {
+    #     'func':matrixize,
+    #     'args': [
+    #         {
+    #             'name': 'step',
+    #             'description':'numbers of iterations to form a matrix (e.g step=3 evalute in len(inp) x 3 matrix',
+    #             'display': 'step'
+    #         },
+    #         {
+    #             'name': 'func',
+    #             'description':'function to apply',
+    #             'display': 'func'
+    #         }
+    #     ],
+    #     'description': 'Compute matrix for diff steps of function',
+    #     'display': 'matrixize'
+    # },
     'histo': {
         'func': histo,
         'args': [
@@ -189,68 +194,69 @@ funcdict = {
             },
         ],
         'description': 'Compute distributions',
-        'display': 'histogram'
+        'display': 'histogram',
+        'type': constants.HISTOGRAM
     },
-    'mult':{
-        'func': mult,
-        'args': [
-            {
-                'name': 'mult',
-                'display': 'mult',
-                'description': 'lambda value'
-            }
-        ],
-        'description': 'Lambda function multiply',
-        'display': 'multiply'
-    },
-    'div':{
-        'func': div,
-        'args': [
-            {
-                'name': 'div',
-                'display': 'div',
-                'description':'lambda value'
-            }
-        ],
-        'description': 'Lambda function divide',
-        'display': 'divide'
-    },
-    'add':{
-        'func': add,
-        'args': [
-            {
-                'name': 'add',
-                'display': 'add',
-                'description':'lambda value'
-            }
-        ],
-        'description': 'Lambda function addition',
-        'display': 'addition'
-    },
-    'subs':{
-        'func': subs,
-        'args': [
-            {
-                'name': 'subs',
-                'display': 'subs',
-                'description':'lambda value'
-            }
-        ],
-        'description': 'Lambda function substraction',
-        'display': 'substraction'
-    },
-    'pwr':{
-        'func': pwr,
-        'args': [
-            {
-                'name': 'pwr',
-                'display': 'pwr',
-                'description':'lambda value'
-            }
-        ],
-        'description': 'Lambda function power',
-        'display': 'power'
-    },
+    # 'mult':{
+    #     'func': mult,
+    #     'args': [
+    #         {
+    #             'name': 'mult',
+    #             'display': 'mult',
+    #             'description': 'lambda value'
+    #         }
+    #     ],
+    #     'description': 'Lambda function multiply',
+    #     'display': 'multiply'
+    # },
+    # 'div':{
+    #     'func': div,
+    #     'args': [
+    #         {
+    #             'name': 'div',
+    #             'display': 'div',
+    #             'description':'lambda value'
+    #         }
+    #     ],
+    #     'description': 'Lambda function divide',
+    #     'display': 'divide'
+    # },
+    # 'add':{
+    #     'func': add,
+    #     'args': [
+    #         {
+    #             'name': 'add',
+    #             'display': 'add',
+    #             'description':'lambda value'
+    #         }
+    #     ],
+    #     'description': 'Lambda function addition',
+    #     'display': 'addition'
+    # },
+    # 'subs':{
+    #     'func': subs,
+    #     'args': [
+    #         {
+    #             'name': 'subs',
+    #             'display': 'subs',
+    #             'description':'lambda value'
+    #         }
+    #     ],
+    #     'description': 'Lambda function substraction',
+    #     'display': 'substraction'
+    # },
+    # 'pwr':{
+    #     'func': pwr,
+    #     'args': [
+    #         {
+    #             'name': 'pwr',
+    #             'display': 'pwr',
+    #             'description':'lambda value'
+    #         }
+    #     ],
+    #     'description': 'Lambda function power',
+    #     'display': 'power'
+    # },
 
     
 }
