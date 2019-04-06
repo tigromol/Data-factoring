@@ -1,0 +1,29 @@
+.pop-up-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 5rem 12.5rem;
+
+  .main-popup {
+    height: 100%;
+    width: 100%;
+    background: whitesmoke;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    .close-btns {
+      display: flex;
+      justify-content: center;
+
+      .btn {
+        margin: 1rem;
+      }
+    }
+  }
+}

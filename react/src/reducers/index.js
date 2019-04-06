@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import chartReducer from "./chartReducer";
 import functionsReducer from "./functionsReducer";
+import popupReducer from "./popupReducer";
 import uploaderReducer from "./uploaderReducer";
 
 export default combineReducers({
-	charts: chartReducer,
-	functions: functionsReducer,
-	file: uploaderReducer,
+  functions: functionsReducer,
+  popup: popupReducer,
+  file: uploaderReducer
 });

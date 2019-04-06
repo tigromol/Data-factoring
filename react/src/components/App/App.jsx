@@ -1,37 +1,39 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Provider } from "react-redux";
-import store from "../../store";
 import FunctionList from "../FunctionList/FunctionList";
 
 import { getFunctions } from "../../actions/functions";
 import { connect } from "react-redux";
 import ControlPanel from "../ControlPanel";
 import Dashboard from "../Dashboard";
+import Popup from "../Popup";
 
-const App = ({ getFunctions }) => {
-	useEffect(() => {
-		getFunctions();
-	}, []);
+const App = ({ getFunctions, popup }) => {
+  useEffect(() => {
+    getFunctions();
+  }, []);
 
-	return (
-		<Provider store={store}>
-			<main className="main">
-				<ControlPanel />
-				<FunctionList />
-				<Dashboard />
-			</main>
-		</Provider>
-	);
+  console.log(popup);
+
+  return (
+    <main className="main">
+      <ControlPanel />
+      <FunctionList />
+      <Dashboard />
+      {popup && popup.isOpen && <Popup />}
+    </main>
+  );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  popup: state.popup
+});
 
 const mapDispatchToProps = {
-	getFunctions,
+  getFunctions
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
