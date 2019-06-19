@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "arg": {
+            "type": "object",
+            "required": ["name", "display", "description"],
+            "properties": {
+                "name": {
+                    "description": "Id of argument to pass to function",
+                    "type": "string"
+                },
+                "display": {
+                    "description": "String representing user friendly name of argument for displaying",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of argument",
+                    "type": "string"
+                }
+            }
+        },
+        "item": {
+            "required": ["name", "display", "description"],
+            "properties": {
+                "name": {
+                    "description": "Id is used to call function",
+                    "type": "string"
+                },
+                "display": {
+                    "description": "String representing user friendly name of function for displaying",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Description of function",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "Array of required arguments for function to call",
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/arg" }
+                }
+            }
+        }
+    },
+    "title": "Functions",
+    "description": "A list of available functions",
+    "type": "array",
+    "items": {"$ref": "#/definitions/item"},
+    "minLength": 1
+}

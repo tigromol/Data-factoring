@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Created data",
+    "description": "Response for created data",
+    "type": "object",
+    "required": ["properties", "name", "type", "data"],
+    "properties": {
+        "id": {
+            "description": "Id of data entity",
+            "type": "string"
+        },
+        "name": {
+            "description": "Name of the data entity",
+            "type": "string"
+        },
+        "type": {
+            "$comment": "0 - linear, 1 - histogram",
+            "description": "Type of plot that is used to represent given data",
+            "type": "string",
+            "enum": ["0", "1"]
+        },
+        "data": {
+            "description": "Data given in CSV format",
+            "type": "array"
+        }
+    }
+}

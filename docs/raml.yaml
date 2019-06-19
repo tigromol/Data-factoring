@@ -1,0 +1,54 @@
+#%RAML 1.0
+---
+title: datafactoring API
+baseUri: 
+version: v1
+schemas:
+  functions: !include ./schemas/functions-schema.json
+  data: !include ./schemas/data-schema.json
+  data-request: !include ./schemas/request-schema.json
+  data-array: !include ./schemas/dataArray-schema.json
+/api:
+  /data:
+    description: Data to be processed by service
+    post:
+      description: Create data for processing from file sent by user
+      body:
+        binary/octet-stream:
+        multipart/form-data:
+          properties:
+            file:
+              description: The file to be uploaded
+              required: true
+              type: file
+      responses:
+        200:
+          body:
+            application/json:
+              schema: data
+    /{id}:
+      description: Data entity
+      post:
+        description: Preprocess concrete entity by given funcitons and get demo of processed data
+        body:
+          application/json:
+            schema: data-request
+        responses:
+          200:
+            body:
+              application/json:
+                schema: data-array
+      put:
+        description: Process concrete entity and get result by mail
+        body:
+          application/json:
+            schema: data-request
+  /functions:
+    description: Functions used to process users' data
+    get:
+      description: Get a list of available functions
+      responses:
+        200:
+          body:
+            application/json:
+              schema: functions

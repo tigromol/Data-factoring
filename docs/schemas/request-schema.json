@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Request",
+    "description": "Request parameters for data processing",
+    "definitions": {
+        "function": {
+            "type": "object",
+            "required": ["name", "args"],
+            "properties": {
+                "name": {
+                    "description": "Id of the function to call",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "List of function arguments",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "required": ["columns"],
+    "properties": {
+        "columns": {
+            "description": "Names of the data entities that are set by first string from csv file",
+            "type": "array",
+            "items": {
+                "type": "string"     
+            }
+        },
+        "singleFunctions": {
+            "description": "List of functions where each of them create single piece of data",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/function"
+            }
+        },
+        "cascadeFunctions": {
+            "description": "List of function where each of them is applied to processed data in call order ",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/function"
+            }
+        }
+    }
+}

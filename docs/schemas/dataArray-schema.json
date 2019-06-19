@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Created data",
+    "description": "Response for created data",
+    "type": "array",
+    "required": ["properties", "name", "type", "data"],
+    "items": {
+        "$ref": "data-schema.json"
+    }
+}
