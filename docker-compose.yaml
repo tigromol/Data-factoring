@@ -12,6 +12,8 @@ services:
       <<: *celery_config
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_DATABASE: datafactoring
+    env_file:
+      - ./.env
     ports:
       - "27017:27017"
     expose:
