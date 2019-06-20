@@ -1,30 +1,23 @@
-const initialState = {
-	columns: ["column1", "column2"],
-	singleFunctions: [
-		{
-			name: "function_name1",
-			args: {
-				arg1: 1,
-				arg2: 2,
-			},
-		},
-	],
-	cascadFunctions: [
-		[
-			{
-				name: "function_name3",
-				args: {
-					arg1: 1,
-					arg2: 2,
-				},
-			},
-		],
-	],
-};
+import {
+  FETCH_FUNCTIONS_REQUEST,
+  FETCH_FUNCTIONS_SUCCESS,
+  FETCH_FUNCTIONS_FAILURE
+} from "../types";
 
-export default (state = initialState, action) => {
-	switch (action.type) {
-		default:
-			return state;
-	}
+const initialState = [];
+
+export default (state = initialState, { type, payload }) => {
+  switch (type) {
+    case FETCH_FUNCTIONS_REQUEST:
+      return state;
+
+    case FETCH_FUNCTIONS_SUCCESS:
+      return [...payload];
+
+    case FETCH_FUNCTIONS_FAILURE:
+      return state;
+
+    default:
+      return state;
+  }
 };

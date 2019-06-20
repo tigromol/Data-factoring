@@ -1,9 +1,13 @@
 ############# MODELS ###############
+ 
+NUMBER: 0
+LINE: 1
+HISTOGRAM: 2
 
 =============== FUNCS ==============
 GET "/api/functions":
-    req: -
-    res = [
+    Req: { }
+    Res body: [
         {
             name: string,
             display: string,
@@ -11,7 +15,8 @@ GET "/api/functions":
             args: [
                 {
                     description: string,
-                    display: string
+                    display: string,
+                    name: "div"
                 }
             ]
         },
@@ -23,7 +28,13 @@ GET "/api/functions":
             args: [
                 {
                     description: string,
-                    display: string
+                    display: string,
+                    name: "div"
+                },
+                {
+                    description: string,
+                    display: string,
+                    name: "inp"
                 }
             ]
         }
@@ -31,10 +42,32 @@ GET "/api/functions":
 
 =============== DATA ==============
 
-POST api/data
+POST api/data:
     Req: file
-    Res body: { 
-        model.Data
+    Res body: {
+        "id": "5ca0e7472a42f1000c694ec0",
+        "type": 1,
+        "name": "Raw data",
+        "data": [
+            [
+                "X",
+                "1958",
+                "1959",
+                "1960"
+            ],
+            [
+                0,
+                340,
+                360,
+                417
+            ],
+            [
+                1,
+                362,
+                406,
+                419
+            ]
+        ]
     }
 
 POST "/api/data/id":
@@ -79,17 +112,88 @@ POST "/api/data/id":
         ]
     }
     
-    Res body: {
-        [
+    Res body: [
+        {
+            "name": "mean",
+            "type": 0,
+            "name": "Raw data",
+            "data": [
+                [
+                    "X",
+                    "1958",
+                    "1959"
+                ],
+                [
+                    0,
+                    386.72727272727275,
+                    436.1818181818182
+                ]
+            ]
+        },
+        {
+            "name": "amplitude",
+            "type": 1,
+            "name": "Raw data",
+            "data": [
+                [
+                    "X",
+                    "1958",
+                    "1959"
+                ],
+                [
+                    0,
+                    151,
+                    188
+                ],
+                [
+                    1,
+                    143,
+                    153
+                ]
+            ]
+        }
+    ]
+
+PUT "/api/data/id":
+    Req body: {
+        columns: [
+            "column1",
+            "column2",
+        ],
+        singleFunctions: [
             {
                 name: "function_name1",
-                column: "column1",
-                data: [1, 2, 3]
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
             },
+            ...,
             {
                 name: "function_name2",
-                column: "column2",
-                data: [1, 2, 3]
-            }
+                args: {
+                    arg1: 1,
+                    arg2: 2
+                }
+            },
+        ],
+        cascadFunctions: [
+                {
+                    name: "function_name3",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
+                },
+                {
+                    name: "function_name4",
+                    args: {
+                        arg1: 1,
+                        arg2: 2
+                    }
+                }
+            ]
         ]
     }
+
+    Res body: { }

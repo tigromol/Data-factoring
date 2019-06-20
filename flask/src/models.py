@@ -28,7 +28,7 @@ class Post(ConvertableDocument):
 
 class Column(EmbeddedDocument):
     name = StringField(requied=True)
-    data = ListField(IntField(), required=True)
+    data = ListField(DynamicField(), required=True)
 
 class Data(ConvertableDocument):
     file = FileField(required=True)
