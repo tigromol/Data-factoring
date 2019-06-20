@@ -11,7 +11,6 @@ services:
     environment:
       <<: *celery_config
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
       MONGO_INITDB_DATABASE: datafactoring
     ports:
       - "27017:27017"
@@ -35,7 +34,11 @@ services:
   celery:
     build:
       context: ./celery
-    environment: *celery_config
+    environment: 
+      <<: *celery_config
+      MAIL_LOGIN: omega.datafactoring@gmail.com
+    env_file:
+      - ./.env
     volumes:
       - ./celery/src:/queue
     depends_on:

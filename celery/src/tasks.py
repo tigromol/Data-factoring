@@ -1,6 +1,8 @@
 import os
 import time
 import math
+import yagmail
+import shutil
 from celery import Celery 
 import matplotlib.pyplot as plt
 from parse import parse
@@ -64,16 +66,41 @@ def process(id, email, single_functions, cascade_functions, filter_columns):
         for column in processed_data:
             result[f"column: {column['name']} functions: {', '.join(function_names)}"] = column['data']
     
+    if not os.path.exists(id):
+        os.makedirs(id)
     df = DataFrame.from_dict(result)
-    df.to_excel(f"data/{id}.xlsx")
-    df.to_csv(f"data/{id}.csv")
-    plt.figure(num=None, figsize=(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size))), dpi=800, facecolor='w', edgecolor='k')
+    df.index.name = 'Num'
+    df.to_excel(f"{id}/{id}.xlsx")
+    df.to_csv(f"{id}/{id}.csv")
+    plt.figure(num=None, figsize=(6,3), dpi=800, facecolor='w', edgecolor='k')
     j = 1
     for i in df:
-        plt.subplot(math.ceil(math.sqrt(df.size)), math.ceil(math.sqrt(df.size)), j)
         plt.plot(list(df[i].values))
         plt.title(f'{str(i)}')
         j += 1
-    plt.savefig(f'images/{id}.png')
-    plt.clf()
+        plt.savefig(f'{id}/{str(i)}.png')
+        plt.clf()
+    
     plt.close()
+
+    shutil.make_archive(str(id), 'zip', f'{id}')
+    shutil.rmtree(f'/{id}', ignore_errors=True)
+
+    print(f"email: {email}")
+    print(f"id: {id}")
+
+    send_mail(f"{id}.zip", email)
+
+def send_mail(filename, receiver):
+    body = "Hello there from Yagmail"
+    login = os.environ.get('MAIL_LOGIN')
+    password = os.environ.get('MAIL_PASSWORD')
+    print(f"login: {login}")
+    print(f"password: {password}")
+    print(f"reciever: {receiver}")
+    yag = yagmail.SMTP(login, password)
+    yag.send(
+        to=receiver,
+        subject="Datafactoring results",
+        attachments=filename,
+)

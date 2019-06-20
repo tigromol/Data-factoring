@@ -2,6 +2,8 @@ FROM python:3.6
 
 ENV BROKER_URL=redis://redis:6379/0
 ENV RESULT_BACKEND=redis://redis:6379/0
+ENV MAIL_LOGIN=omega.datafactoring@gmail.com
+ENV MAIL_PASSWORD=admin
 
 COPY requirements.txt /queue/
 WORKDIR /queue
